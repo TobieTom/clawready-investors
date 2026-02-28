@@ -1,196 +1,369 @@
 import Navbar from "@/components/Navbar";
 import {
   ArrowRight,
-  Bot,
-  ChevronRight,
-  Clock,
-  Code2,
-  DollarSign,
-  ExternalLink,
-  Github,
-  Layout,
   Lock,
-  Shield,
-  Star,
-  Target,
   TrendingDown,
+  Shield,
   TrendingUp,
-  Wallet,
-  Zap,
+  Target,
 } from "lucide-react";
 
-/* ─────────────────────────────────────────────────────────
-   HERO
-───────────────────────────────────────────────────────── */
+/* ── Data ─────────────────────────────────────────── */
+
+const TERMINAL_LINES = [
+  {
+    text: "DCA Bot → Bought 12.4 SOL at $142.30",
+    status: "✓",
+    color: "#10b981",
+  },
+  {
+    text: "Portfolio Guard → Rebalanced USDC allocation",
+    status: "✓",
+    color: "#10b981",
+  },
+  {
+    text: "Yield Hunter → Moved $2,400 to Orca pool (APY 34.2%)",
+    status: "✓",
+    color: "#10b981",
+  },
+  {
+    text: "Token Sniper → Detected: $CLAW listed on Jupiter",
+    status: "✓",
+    color: "#10b981",
+  },
+  {
+    text: "DCA Bot → Next buy scheduled in 3h 42m",
+    status: "⟳",
+    color: "#f59e0b",
+  },
+  {
+    text: "Portfolio Guard → Stop-loss updated: $129.40",
+    status: "✓",
+    color: "#10b981",
+  },
+];
+
+const TICKER_CONTENT =
+  "DCA Bot ↑ 12.4% this week  ·  Portfolio Guard saved $1,240 in drawdown  ·  Yield Hunter: 34.2% APY  ·  Token Sniper: 3 trades executed today  ·  28 agents deployed on devnet  ·  OpenClaw × Solana  ·  ";
+
+const BENTO_STRATEGIES = [
+  { name: "DCA Bot", risk: "Low", color: "#3b82f6" },
+  { name: "Portfolio Guard", risk: "Medium", color: "#10b981" },
+  { name: "Yield Hunter", risk: "Medium", color: "#f59e0b" },
+  { name: "Token Sniper", risk: "High", color: "#ef4444" },
+];
+
+const BAR_DATA = [
+  { label: "Jan", manual: 42, ai: 64 },
+  { label: "Feb", manual: 28, ai: 71 },
+  { label: "Mar", manual: 51, ai: 89 },
+];
+
+const STRATEGIES = [
+  {
+    name: "DCA Bot",
+    icon: TrendingDown,
+    risk: "Low Risk",
+    color: "#3b82f6",
+    desc: "Automatically buy on dips. Average your entry price over time without lifting a finger.",
+    stat: "↑ 12.4% avg weekly",
+    pattern:
+      "repeating-linear-gradient(-45deg, rgba(59,130,246,0.05), rgba(59,130,246,0.05) 1px, transparent 1px, transparent 8px)",
+  },
+  {
+    name: "Portfolio Guard",
+    icon: Shield,
+    risk: "Medium Risk",
+    color: "#10b981",
+    desc: "Set stop-loss and take-profit thresholds. Protect your gains around the clock.",
+    stat: "$1,240 saved last week",
+    pattern:
+      "repeating-linear-gradient(0deg, rgba(16,185,129,0.05), rgba(16,185,129,0.05) 1px, transparent 1px, transparent 14px)",
+  },
+  {
+    name: "Yield Hunter",
+    icon: TrendingUp,
+    risk: "Medium Risk",
+    color: "#f59e0b",
+    desc: "Scan liquidity pools for highest APY. Auto-compound and rebalance daily.",
+    stat: "34.2% APY on Orca",
+    pattern:
+      "radial-gradient(circle, rgba(245,158,11,0.08) 1px, transparent 1px) 0 0 / 14px 14px",
+  },
+  {
+    name: "Token Sniper",
+    icon: Target,
+    risk: "High Risk",
+    color: "#ef4444",
+    desc: "Detect new token launches and execute buys within milliseconds of listing.",
+    stat: "3 trades today",
+    pattern: `repeating-linear-gradient(0deg, rgba(239,68,68,0.04), rgba(239,68,68,0.04) 1px, transparent 1px, transparent 10px),
+      repeating-linear-gradient(90deg, rgba(239,68,68,0.04), rgba(239,68,68,0.04) 1px, transparent 1px, transparent 10px)`,
+  },
+];
+
+/* ── Hero ─────────────────────────────────────────── */
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 pt-16">
-      {/* CSS orb */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <div
-          style={{
-            width: 640,
-            height: 640,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle at center, rgba(124,58,237,0.18) 0%, rgba(124,58,237,0.08) 35%, rgba(6,182,212,0.05) 60%, transparent 72%)",
-            filter: "blur(48px)",
-            animation: "orb-pulse 7s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="absolute"
-          style={{
-            width: 360,
-            height: 360,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle at center, rgba(124,58,237,0.22) 0%, transparent 65%)",
-            filter: "blur(20px)",
-            animation: "orb-pulse 4.5s ease-in-out infinite reverse",
-          }}
-        />
-      </div>
-
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
-        {/* Badge */}
-        <div
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-purple-500/30 bg-purple-600/10 text-sm mb-8"
-          style={{ animation: "fadeInUp 0.6s 0s ease both" }}
-        >
-          <span>🏆</span>
-          <span className="shimmer-text font-medium">
-            Spark Hackathon #1 — OpenClaw for Investors
-          </span>
-        </div>
-
-        {/* Headline */}
-        <h1
-          className="text-6xl md:text-[82px] font-black tracking-tight leading-none mb-6"
-          style={{ animation: "fadeInUp 0.6s 0.1s ease both" }}
-        >
-          <span className="block text-white">The Smartest Way to Deploy</span>
-          <span
-            className="block mt-2"
-            style={{
-              background:
-                "linear-gradient(135deg, #7c3aed 0%, #06b6d4 50%, #7c3aed 100%)",
-              backgroundSize: "200% auto",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              animation: "shimmer 4s linear infinite",
-            }}
+    <section className="min-h-screen pt-[60px] flex items-center">
+      <div className="w-full max-w-[1400px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-16 py-20 items-center">
+        {/* Left: text */}
+        <div>
+          <h1
+            className="text-[80px] md:text-[110px] lg:text-[130px] font-black leading-none text-white"
+            style={{ letterSpacing: "-0.04em" }}
           >
-            AI Trading Agents on Solana
-          </span>
-        </h1>
+            DEPLOY.
+          </h1>
 
-        {/* Subheadline */}
-        <p
-          className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed"
-          style={{ animation: "fadeInUp 0.6s 0.2s ease both" }}
-        >
-          OpenClaw is powerful. We made it effortless. Deploy, monitor and
-          control AI agents in under 60 seconds —{" "}
-          <span className="text-slate-200">
-            no code, no CLI, no compromise.
-          </span>
-        </p>
-
-        {/* CTAs */}
-        <div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-          style={{ animation: "fadeInUp 0.6s 0.3s ease both" }}
-        >
-          <button
-            className="group flex items-center gap-2 px-8 py-4 bg-purple-600 text-white font-semibold rounded-xl text-base hover:bg-purple-500 active:scale-95 transition-all duration-200"
-            style={{ animation: "pulse-glow 2.5s ease-in-out infinite" }}
+          <p
+            className="mt-6 text-[17px] text-[#555] leading-relaxed max-w-sm"
+            style={{ fontWeight: 400 }}
           >
-            Launch My First Agent
-            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-          </button>
-          <button className="flex items-center gap-2 px-8 py-4 text-slate-300 border border-white/10 font-medium rounded-xl text-base hover:border-white/20 hover:text-white hover:bg-white/[0.04] active:scale-95 transition-all duration-200">
-            See How It Works
-          </button>
-        </div>
+            OpenClaw AI agents.
+            <br />
+            Zero code. Under 60 seconds.
+          </p>
 
-        {/* Trust signals */}
-        <div
-          className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500"
-          style={{ animation: "fadeInUp 0.6s 0.4s ease both" }}
-        >
-          {[
-            { icon: "🔒", text: "Non-custodial" },
-            { icon: "⚡", text: "Live on Solana Devnet" },
-            { icon: "🛡️", text: "Open Source" },
-          ].map(({ icon, text }) => (
-            <span key={text} className="flex items-center gap-1.5">
-              {icon}
-              <span>{text}</span>
+          {/* Live pill */}
+          <div className="mt-8 inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(255,255,255,0.08)] rounded-[4px]">
+            <span
+              className="w-2 h-2 rounded-full bg-[#10b981] live-dot flex-shrink-0"
+              aria-hidden
+            />
+            <span className="text-[13px] text-[#555] font-mono">
+              3 agents active on devnet
             </span>
-          ))}
+          </div>
+
+          {/* CTA */}
+          <div className="mt-6">
+            <button className="flex items-center gap-2 px-6 py-3 bg-[#8b5cf6] text-white font-bold text-[15px] rounded-[4px] hover:bg-[#7c3aed] active:scale-[0.98] transition-all duration-150 group">
+              Start Deploying
+              <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Right: animated terminal */}
+        <div
+          className="border border-[rgba(255,255,255,0.07)] h-[360px] lg:h-[460px] flex flex-col overflow-hidden"
+          style={{ background: "#060606" }}
+        >
+          {/* Terminal header */}
+          <div className="flex items-center justify-between px-5 py-3 border-b border-[rgba(255,255,255,0.06)] flex-shrink-0">
+            <span className="label-mono">Agent Activity Feed</span>
+            <div className="flex items-center gap-1.5">
+              <span
+                className="w-1.5 h-1.5 rounded-full bg-[#10b981] live-dot"
+                aria-hidden
+              />
+              <span className="label-mono text-[#10b981]">LIVE</span>
+            </div>
+          </div>
+
+          {/* Terminal body */}
+          <div className="flex-1 px-5 py-4 flex flex-col gap-3 overflow-hidden font-mono text-[13px]">
+            {TERMINAL_LINES.map((line, i) => (
+              <div
+                key={i}
+                className="terminal-line flex items-center gap-2.5"
+                style={{ animationDelay: `${0.4 + i * 0.6}s` }}
+              >
+                <span className="text-[#333] flex-shrink-0">›</span>
+                <span className="text-[#777] flex-1 truncate">{line.text}</span>
+                <span className="flex-shrink-0" style={{ color: line.color }}>
+                  {line.status}
+                </span>
+              </div>
+            ))}
+
+            {/* Blinking cursor after last line */}
+            <div className="terminal-cursor-wrap flex items-center gap-2.5">
+              <span className="text-[#333]">›</span>
+              <span className="terminal-cursor" />
+            </div>
+          </div>
+
+          {/* Terminal footer bar */}
+          <div className="px-5 py-2.5 border-t border-[rgba(255,255,255,0.04)] flex items-center justify-between flex-shrink-0">
+            <span className="label-mono">solana devnet</span>
+            <span className="label-mono text-[#8b5cf6]">
+              slot #289,481,420
+            </span>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   STATS
-───────────────────────────────────────────────────────── */
-const STATS = [
-  {
-    icon: Clock,
-    value: "< 60s",
-    label: "Deploy Time",
-    color: "text-purple-400",
-    iconBg: "rgba(124,58,237,0.12)",
-  },
-  {
-    icon: Code2,
-    value: "0",
-    label: "Lines of Code",
-    color: "text-cyan-400",
-    iconBg: "rgba(6,182,212,0.12)",
-  },
-  {
-    icon: Layout,
-    value: "4",
-    label: "Strategies",
-    color: "text-emerald-400",
-    iconBg: "rgba(16,185,129,0.12)",
-  },
-  {
-    icon: DollarSign,
-    value: "$0",
-    label: "Platform Fees",
-    color: "text-amber-400",
-    iconBg: "rgba(245,158,11,0.12)",
-  },
-];
-
-function StatsSection() {
+/* ── Metrics ticker ───────────────────────────────── */
+function MetricsTicker() {
   return (
-    <section className="py-16 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="glass rounded-2xl p-8 md:p-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/[0.05]">
-            {STATS.map(({ icon: Icon, value, label, color, iconBg }) => (
+    <div className="border-y border-[rgba(255,255,255,0.06)] overflow-hidden py-3.5">
+      <div className="ticker-track select-none">
+        {[0, 1].map((n) => (
+          <span
+            key={n}
+            className="font-mono text-[12px] text-[#333] pr-16 whitespace-nowrap"
+            aria-hidden={n === 1}
+          >
+            {TICKER_CONTENT}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Bento grid ───────────────────────────────────── */
+function BentoSection() {
+  return (
+    <section className="py-20 px-8 max-w-[1400px] mx-auto">
+      <h2
+        className="text-[44px] md:text-[52px] font-black text-white mb-10 leading-none"
+        style={{ letterSpacing: "-0.04em" }}
+      >
+        Everything you need.
+      </h2>
+
+      <div className="bento-grid">
+        {/* Panel 1 — Strategies */}
+        <div className="bento-cell bento-p1 flex flex-col">
+          <span className="label-mono mb-6">Strategies</span>
+          <p
+            className="text-[22px] font-bold text-white mb-auto"
+            style={{ letterSpacing: "-0.02em" }}
+          >
+            4 battle-tested
+            <br />
+            strategies
+          </p>
+          <div className="flex flex-col gap-0 mt-8">
+            {BENTO_STRATEGIES.map(({ name, risk, color }, i) => (
               <div
-                key={label}
-                className="group flex flex-col items-center text-center p-6 rounded-xl hover:bg-white/[0.03] hover:shadow-[0_0_30px_rgba(124,58,237,0.12)] cursor-default transition-all duration-300"
+                key={name}
+                className="flex items-center justify-between py-3"
+                style={{
+                  borderTop:
+                    i === 0 ? "1px solid rgba(255,255,255,0.06)" : undefined,
+                  borderBottom: "1px solid rgba(255,255,255,0.06)",
+                }}
               >
-                <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-                  style={{ background: iconBg }}
-                >
-                  <Icon className={`w-5 h-5 ${color}`} />
-                </div>
-                <span className="text-4xl md:text-5xl font-black text-white mb-1 tabular-nums">
-                  {value}
+                <span className="text-[15px] font-semibold text-white">
+                  {name}
                 </span>
-                <span className="text-sm text-slate-500">{label}</span>
+                <span className="font-mono text-[12px]" style={{ color }}>
+                  — {risk}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Panel 2 — Non-custodial */}
+        <div className="bento-cell bento-p2 flex flex-col justify-between">
+          <Lock className="w-5 h-5 text-[#555] mb-4" />
+          <div>
+            <p
+              className="text-[18px] font-bold text-white mb-2"
+              style={{ letterSpacing: "-0.02em" }}
+            >
+              Non-custodial
+            </p>
+            <p className="text-[13px] text-[#444] leading-relaxed">
+              Your keys never leave your wallet. We have zero access to your
+              funds.
+            </p>
+          </div>
+        </div>
+
+        {/* Panel 3 — Solana Devnet */}
+        <div className="bento-cell bento-p3 flex flex-col justify-between">
+          <div
+            className="w-5 h-5 rounded-full mb-4 flex-shrink-0"
+            style={{
+              background:
+                "linear-gradient(135deg, #9945ff 0%, #14f195 100%)",
+            }}
+          />
+          <div>
+            <p
+              className="text-[18px] font-bold text-white mb-2"
+              style={{ letterSpacing: "-0.02em" }}
+            >
+              Live on Solana
+              <br />
+              Devnet
+            </p>
+            <p className="font-mono text-[11px] text-[#444]">
+              Slot #289,481,420
+            </p>
+          </div>
+        </div>
+
+        {/* Panel 4 — Bar chart */}
+        <div className="bento-cell bento-p4 flex flex-col">
+          <span className="label-mono mb-4">AI vs Manual</span>
+          <div className="flex items-end gap-4 flex-1">
+            {BAR_DATA.map(({ label, manual, ai }, gi) => (
+              <div key={label} className="flex-1 flex flex-col gap-1">
+                <div className="flex items-end gap-1 h-20">
+                  {/* Manual bar */}
+                  <div className="flex-1 flex items-end">
+                    <div
+                      className="bar-grow w-full bg-[#1c1c1c]"
+                      style={{
+                        height: `${manual}%`,
+                        animationDelay: `${0.3 + gi * 0.4}s`,
+                      }}
+                    />
+                  </div>
+                  {/* AI bar */}
+                  <div className="flex-1 flex items-end">
+                    <div
+                      className="bar-grow w-full bg-[#8b5cf6]"
+                      style={{
+                        height: `${ai}%`,
+                        animationDelay: `${0.5 + gi * 0.4}s`,
+                      }}
+                    />
+                  </div>
+                </div>
+                <span className="label-mono text-center">{label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center gap-4 mt-3">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 bg-[#1c1c1c] border border-[#333]" />
+              <span className="label-mono">Manual</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 bg-[#8b5cf6]" />
+              <span className="label-mono text-[#8b5cf6]">AI Agent</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Panel 5 — Deploy steps */}
+        <div className="bento-cell bento-p5 flex flex-col">
+          <span className="label-mono mb-6">Deploy in 3 steps</span>
+          <div className="flex flex-col gap-5 flex-1 justify-center">
+            {[
+              { n: "01", title: "Connect Wallet" },
+              { n: "02", title: "Choose Strategy" },
+              { n: "03", title: "Deploy Agent" },
+            ].map(({ n, title }) => (
+              <div key={n} className="flex items-center gap-4 group">
+                <span className="font-mono text-[11px] text-[#333] w-6 flex-shrink-0">
+                  {n}
+                </span>
+                <span className="text-[14px] text-[#888] group-hover:text-white transition-colors flex-1">
+                  {title}
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#333] group-hover:text-[#8b5cf6] transition-colors flex-shrink-0" />
               </div>
             ))}
           </div>
@@ -200,448 +373,224 @@ function StatsSection() {
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   HOW IT WORKS
-───────────────────────────────────────────────────────── */
-const STEPS = [
-  {
-    step: "01",
-    icon: Wallet,
-    title: "Connect Your Wallet",
-    desc: "Link your Phantom or Solflare wallet in one click. We never touch your keys — everything stays non-custodial.",
-  },
-  {
-    step: "02",
-    icon: Target,
-    title: "Choose a Strategy",
-    desc: "Pick from DCA, Portfolio Guard, Yield Hunter, or Token Sniper. Configure risk tolerance in under a minute.",
-  },
-  {
-    step: "03",
-    icon: Zap,
-    title: "Deploy & Monitor",
-    desc: "Your OpenClaw AI agent goes live instantly. Watch it trade in real-time from your live dashboard.",
-  },
-];
-
-function HowItWorksSection() {
-  return (
-    <section className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-4 mb-16">
-          <div className="w-1 h-10 bg-gradient-to-b from-purple-500 to-transparent rounded-full flex-shrink-0" />
-          <div>
-            <p className="text-purple-400 text-xs font-semibold uppercase tracking-widest mb-1">
-              Simple by design
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
-              How It Works
-            </h2>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {STEPS.map(({ step, icon: Icon, title, desc }) => (
-            <div
-              key={step}
-              className="step-card group glass rounded-2xl p-8 hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(124,58,237,0.15)] transition-all duration-300 relative overflow-hidden"
-            >
-              {/* Watermark step number */}
-              <span className="absolute -right-3 -top-6 text-[110px] font-black text-white/[0.025] leading-none select-none pointer-events-none">
-                {step}
-              </span>
-
-              <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-purple-600/20 border border-purple-500/20 flex items-center justify-center mb-6 group-hover:bg-purple-600/30 group-hover:border-purple-500/40 transition-all duration-300">
-                  <Icon className="w-5 h-5 text-purple-400" />
-                </div>
-                <h3 className="text-lg font-bold text-white mb-3">{title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────
-   STRATEGIES
-───────────────────────────────────────────────────────── */
-const STRATEGIES = [
-  {
-    name: "DCA Bot",
-    desc: "Automatically buy on dips and average your entry price over time. Set it, forget it.",
-    icon: TrendingDown,
-    risk: "Low",
-    riskClass: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
-    borderColor: "#3b82f6",
-    glow: "rgba(59,130,246,0.15)",
-  },
-  {
-    name: "Portfolio Guard",
-    desc: "Set stop-loss and take-profit thresholds. Your AI agent protects your gains around the clock.",
-    icon: Shield,
-    risk: "Medium",
-    riskClass: "text-amber-400 bg-amber-400/10 border-amber-400/20",
-    borderColor: "#10b981",
-    glow: "rgba(16,185,129,0.15)",
-  },
-  {
-    name: "Yield Hunter",
-    desc: "Continuously scan liquidity pools and yield farms for the highest APY opportunities.",
-    icon: TrendingUp,
-    risk: "Medium",
-    riskClass: "text-amber-400 bg-amber-400/10 border-amber-400/20",
-    borderColor: "#f59e0b",
-    glow: "rgba(245,158,11,0.15)",
-  },
-  {
-    name: "Token Sniper",
-    desc: "Detect new token launches and execute buys within milliseconds of listing.",
-    icon: Target,
-    risk: "High",
-    riskClass: "text-red-400 bg-red-400/10 border-red-400/20",
-    borderColor: "#ef4444",
-    glow: "rgba(239,68,68,0.15)",
-  },
-];
-
+/* ── Strategy blocks ──────────────────────────────── */
 function StrategySection() {
   return (
-    <section className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
-          Choose Your Strategy
+    <section className="py-20">
+      <div className="px-8 max-w-[1400px] mx-auto mb-8 flex items-end justify-between">
+        <h2
+          className="text-[36px] md:text-[44px] font-black text-white leading-none"
+          style={{ letterSpacing: "-0.04em" }}
+        >
+          Pick your edge.
         </h2>
-        <p className="text-slate-400 text-center mb-14 max-w-xl mx-auto">
-          Four battle-tested strategies built for every risk profile. Deploy any
-          of them in seconds.
-        </p>
+        <span className="label-mono hidden md:block">Scroll to explore →</span>
+      </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {STRATEGIES.map(
-            ({
-              name,
-              desc,
-              icon: Icon,
-              risk,
-              riskClass,
-              borderColor,
-              glow,
-            }) => (
-              <div
-                key={name}
-                className="strategy-card group glass rounded-2xl p-8 border-l-[3px] relative overflow-hidden"
-                style={
-                  {
-                    borderLeftColor: borderColor,
-                    "--hover-glow": `0 8px 40px ${glow}`,
-                  } as React.CSSProperties
-                }
-              >
-                {/* Subtle dot grid */}
-                <div
-                  className="absolute inset-0 opacity-[0.018] pointer-events-none"
-                  style={{
-                    backgroundImage:
-                      "radial-gradient(circle, white 1px, transparent 1px)",
-                    backgroundSize: "22px 22px",
-                  }}
-                />
+      <div className="strategy-track px-8">
+        {STRATEGIES.map(({ name, icon: Icon, risk, color, desc, stat, pattern }) => (
+          <div
+            key={name}
+            className="strategy-block"
+            style={{ borderTopColor: color, backgroundImage: pattern }}
+          >
+            {/* Rotated strategy name — left spine */}
+            <div className="strategy-vert-name" style={{ color }}>
+              {name}
+            </div>
 
-                <div className="relative z-10">
-                  <div className="flex items-start justify-between mb-5">
-                    <div
-                      className="w-11 h-11 rounded-xl flex items-center justify-center"
-                      style={{
-                        background: `${borderColor}1a`,
-                        border: `1px solid ${borderColor}30`,
-                      }}
-                    >
-                      <Icon
-                        className="w-5 h-5"
-                        style={{ color: borderColor }}
-                      />
-                    </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium border ${riskClass}`}
-                    >
-                      {risk} Risk
-                    </span>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white mb-2">{name}</h3>
-                  <p className="text-slate-400 text-sm mb-7 leading-relaxed">
-                    {desc}
-                  </p>
-
-                  <button
-                    className="flex items-center gap-1.5 text-sm font-semibold group-hover:gap-2.5 transition-all duration-200"
-                    style={{ color: borderColor }}
+            {/* Main content */}
+            <div className="strategy-content">
+              {/* Top */}
+              <div>
+                <div className="flex items-center justify-between mb-5">
+                  <div
+                    className="w-9 h-9 flex items-center justify-center border"
+                    style={{
+                      background: `${color}18`,
+                      borderColor: `${color}30`,
+                    }}
                   >
-                    Deploy This
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+                    <Icon className="w-4 h-4" style={{ color }} />
+                  </div>
+                  <span
+                    className="font-mono text-[11px] px-2.5 py-1 border"
+                    style={{ color, borderColor: `${color}30` }}
+                  >
+                    {risk}
+                  </span>
                 </div>
+
+                <h3
+                  className="text-[18px] font-bold text-white mb-3"
+                  style={{ letterSpacing: "-0.02em" }}
+                >
+                  {name}
+                </h3>
+                <p className="text-[13px] text-[#555] leading-relaxed">
+                  {desc}
+                </p>
               </div>
-            )
-          )}
-        </div>
+
+              {/* Stat */}
+              <div className="mt-auto pt-4 border-t border-[rgba(255,255,255,0.06)]">
+                <p className="font-mono text-[12px]" style={{ color }}>
+                  {stat}
+                </p>
+              </div>
+
+              {/* Deploy button — revealed on hover */}
+              <button
+                className="strategy-deploy-btn mt-4 flex items-center gap-1.5 text-[13px] font-semibold"
+                style={{ color }}
+              >
+                Deploy This Strategy
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        ))}
+
+        {/* Trailing spacer */}
+        <div className="flex-shrink-0 w-8" aria-hidden />
       </div>
     </section>
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   SOCIAL PROOF
-───────────────────────────────────────────────────────── */
-const TESTIMONIALS = [
-  {
-    initials: "AK",
-    name: "Alex K.",
-    role: "Crypto Fund Manager",
-    quote:
-      "ClawReady turned our manual DCA strategy into a fully automated system in under a minute. The interface is unlike anything I've seen in DeFi.",
-    avatarColor: "#7c3aed",
-  },
-  {
-    initials: "MT",
-    name: "Maya T.",
-    role: "Retail Investor",
-    quote:
-      "I'm not technical at all, but I deployed my first AI agent in 45 seconds. Portfolio Guard alone saved me from a brutal 30% drawdown last week.",
-    avatarColor: "#06b6d4",
-  },
-  {
-    initials: "RS",
-    name: "Ryan S.",
-    role: "DeFi Researcher",
-    quote:
-      "Finally — a UI that doesn't assume you have a CS degree. OpenClaw's power with zero friction. The Yield Hunter strategy is worth it alone.",
-    avatarColor: "#10b981",
-  },
-];
-
+/* ── Social proof ─────────────────────────────────── */
 function SocialProofSection() {
   return (
-    <section className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
-          Built for serious investors
-        </h2>
-        <p className="text-slate-400 text-center mb-14">
-          Early adopters are already putting their portfolios on autopilot.
-        </p>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {TESTIMONIALS.map(({ initials, name, role, quote, avatarColor }) => (
-            <div
-              key={name}
-              className="glass rounded-2xl p-8 hover:-translate-y-0.5 hover:shadow-[0_8px_40px_rgba(124,58,237,0.1)] transition-all duration-300"
-            >
-              <div className="flex gap-0.5 mb-5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-4 h-4 fill-amber-400 text-amber-400"
-                  />
-                ))}
-              </div>
-              <p className="text-slate-300 text-sm leading-relaxed mb-7">
-                &ldquo;{quote}&rdquo;
-              </p>
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                  style={{ background: avatarColor }}
-                >
-                  {initials}
-                </div>
-                <div>
-                  <p className="text-white text-sm font-semibold">{name}</p>
-                  <p className="text-slate-500 text-xs">{role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────
-   FINAL CTA
-───────────────────────────────────────────────────────── */
-function FinalCTASection() {
-  return (
-    <section className="py-28 px-6 relative overflow-hidden">
-      {/* Gradient background */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(6,182,212,0.06) 50%, rgba(124,58,237,0.08) 100%)",
-        }}
-      />
-
-      {/* Top purple gradient line */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, rgba(124,58,237,0.7), rgba(6,182,212,0.5), transparent)",
-        }}
-      />
-      {/* Bottom line */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, rgba(124,58,237,0.3), transparent)",
-        }}
-      />
-
-      {/* CSS "particles" — multi-box-shadow dot field */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(124,58,237,0.35) 1.5px, transparent 1.5px)",
-          backgroundSize: "56px 56px",
-          animation: "float-dot 9s ease-in-out infinite",
-          opacity: 0.4,
-        }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(6,182,212,0.2) 1px, transparent 1px)",
-          backgroundSize: "80px 80px",
-          backgroundPosition: "28px 28px",
-          animation: "float-dot 12s ease-in-out infinite reverse",
-          opacity: 0.3,
-        }}
-      />
-
-      <div className="relative z-10 max-w-3xl mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-black text-white mb-5 leading-tight">
-          Ready to put your portfolio
-          <br />
-          <span
-            style={{
-              background: "linear-gradient(135deg, #a855f7, #06b6d4)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            on autopilot?
-          </span>
-        </h2>
-        <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto">
-          Join investors using AI to trade smarter on Solana. Deploy your first
-          agent in under 60 seconds — no credit card, no CLI.
-        </p>
-        <button
-          className="inline-flex items-center gap-2.5 px-10 py-5 bg-purple-600 text-white font-bold text-lg rounded-xl hover:bg-purple-500 active:scale-95 transition-all duration-200"
-          style={{ animation: "pulse-glow 2.5s ease-in-out infinite" }}
+    <section className="py-28 px-8 max-w-[1400px] mx-auto">
+      {/* Primary pull quote */}
+      <div className="max-w-3xl">
+        <blockquote
+          className="text-[40px] md:text-[52px] italic text-white leading-tight"
+          style={{ letterSpacing: "-0.02em" }}
         >
-          Launch My First Agent
-          <ArrowRight className="w-5 h-5" />
-        </button>
+          &ldquo;I deployed my first AI agent in 40 seconds. It&rsquo;s unlike
+          anything in DeFi.&rdquo;
+        </blockquote>
+        <p className="font-mono text-[13px] text-[#444] mt-5">
+          — Maya T., Retail Investor
+        </p>
       </div>
-    </section>
-  );
-}
 
-/* ─────────────────────────────────────────────────────────
-   FOOTER
-───────────────────────────────────────────────────────── */
-function Footer() {
-  return (
-    <footer className="py-12 px-6 relative">
-      {/* Top purple gradient border */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, rgba(124,58,237,0.5), rgba(6,182,212,0.3), transparent)",
-        }}
-      />
-
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 items-start">
-        {/* Brand */}
-        <div>
-          <div className="flex items-center gap-2.5 mb-3">
-            <div
-              className="w-8 h-8 flex items-center justify-center"
-              style={{
-                clipPath:
-                  "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-                background: "linear-gradient(135deg, #7c3aed, #5b21b6)",
-              }}
-            >
-              <span className="text-white text-[9px] font-black">CR</span>
-            </div>
-            <span className="text-white font-bold text-sm">ClawReady</span>
-          </div>
-          <p className="text-slate-500 text-sm">
-            AI trading agents for the modern investor.
+      {/* Secondary quotes — asymmetric placement */}
+      <div className="mt-24 grid grid-cols-12 gap-6">
+        <div className="col-span-12 md:col-span-5">
+          <blockquote className="text-[17px] text-[#2e2e2e] italic leading-relaxed">
+            &ldquo;ClawReady turned our manual DCA strategy into an automated
+            system in under a minute.&rdquo;
+          </blockquote>
+          <p className="font-mono text-[11px] text-[#252525] mt-3">
+            — Alex K., Fund Manager
           </p>
         </div>
+        <div className="col-span-12 md:col-span-4 md:col-start-9">
+          <blockquote className="text-[17px] text-[#2e2e2e] italic leading-relaxed">
+            &ldquo;Portfolio Guard saved me from a 30% drawdown. No code, no
+            stress.&rdquo;
+          </blockquote>
+          <p className="font-mono text-[11px] text-[#252525] mt-3">
+            — Ryan S., DeFi Researcher
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-        {/* Links */}
-        <div className="flex flex-wrap gap-6 md:justify-center">
+/* ── Final CTA ────────────────────────────────────── */
+function CTASection() {
+  return (
+    <section
+      id="deploy"
+      className="py-24 px-8 flex justify-center items-center"
+    >
+      <div className="relative w-full max-w-2xl">
+        {/* SVG animated border */}
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          preserveAspectRatio="none"
+          fill="none"
+          aria-hidden
+        >
+          <rect
+            x="0.5"
+            y="0.5"
+            width="calc(100% - 1px)"
+            height="calc(100% - 1px)"
+            stroke="#8b5cf6"
+            strokeWidth="1"
+            className="cta-border-rect"
+          />
+        </svg>
+
+        <div className="px-10 md:px-20 py-20 text-center">
+          <h2
+            className="text-[40px] md:text-[52px] font-black text-white leading-tight mb-4"
+            style={{ letterSpacing: "-0.04em" }}
+          >
+            Put your portfolio
+            <br />
+            on autopilot.
+          </h2>
+          <p className="text-[15px] text-[#555] mb-10 leading-relaxed">
+            Deploy an OpenClaw AI agent in under 60 seconds.
+            <br />
+            No code. No credit card. Just your wallet.
+          </p>
+          <button className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#8b5cf6] text-white font-bold text-[15px] rounded-[4px] hover:bg-[#7c3aed] active:scale-[0.98] transition-all duration-150 group">
+            Start Deploying
+            <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Footer ───────────────────────────────────────── */
+function Footer() {
+  return (
+    <footer className="border-t border-[rgba(255,255,255,0.08)] py-6 px-8">
+      <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <span className="font-mono font-bold text-white text-sm tracking-tight">
+          ClawReady
+        </span>
+        <nav className="flex gap-8">
           {["Strategies", "Dashboard", "Docs", "GitHub"].map((link) => (
             <a
               key={link}
               href="#"
-              className="text-slate-500 hover:text-slate-300 text-sm transition-colors flex items-center gap-1"
+              className="text-[#333] hover:text-[#777] text-[13px] transition-colors flex items-center gap-1"
             >
-              {link === "GitHub" && <Github className="w-3.5 h-3.5" />}
               {link}
             </a>
           ))}
-        </div>
-
-        {/* Credits */}
-        <div className="md:text-right">
-          <p className="text-slate-500 text-sm">
-            Built by{" "}
-            <a
-              href="#"
-              className="text-purple-400 hover:text-purple-300 transition-colors"
-            >
-              @TobieTom
-            </a>{" "}
-            for Spark Hackathon #1
-          </p>
-          <p className="text-slate-600 text-xs mt-1">
-            Powered by OpenClaw × Solana
-          </p>
-        </div>
+        </nav>
+        <p className="font-mono text-[11px] text-[#252525] text-center">
+          Built by @TobieTom for Spark Hackathon #1 · Powered by OpenClaw ×
+          Solana
+        </p>
       </div>
     </footer>
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   PAGE
-───────────────────────────────────────────────────────── */
+/* ── Page ─────────────────────────────────────────── */
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden">
+    <main>
       <Navbar />
       <HeroSection />
-      <StatsSection />
-      <HowItWorksSection />
+      <MetricsTicker />
+      <BentoSection />
+      <MetricsTicker />
       <StrategySection />
       <SocialProofSection />
-      <FinalCTASection />
+      <CTASection />
       <Footer />
     </main>
   );
