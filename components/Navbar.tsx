@@ -44,7 +44,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href="#deploy"
+            href="/deploy"
             className="px-4 py-2 text-sm text-white border border-[rgba(255,255,255,0.12)] rounded-[4px] hover:border-[#8b5cf6] hover:text-[#8b5cf6] active:scale-95 transition-all duration-150"
           >
             Start Deploying
@@ -85,7 +85,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href="#deploy"
+            href="/deploy"
             className="w-fit px-4 py-2 text-sm text-white border border-[rgba(255,255,255,0.12)] rounded-[4px]"
             onClick={() => setOpen(false)}
           >

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import {
   ArrowRight,
@@ -165,10 +166,10 @@ function HeroSection() {
 
           {/* CTA */}
           <div className="mt-6">
-            <button className="flex items-center gap-2 px-6 py-3 bg-[#8b5cf6] text-white font-bold text-[15px] rounded-[4px] hover:bg-[#7c3aed] active:scale-[0.98] transition-all duration-150 group">
+            <Link href="/deploy" className="flex items-center gap-2 px-6 py-3 bg-[#8b5cf6] text-white font-bold text-[15px] rounded-[4px] hover:bg-[#7c3aed] active:scale-[0.98] transition-all duration-150 group">
               Start Deploying
               <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -658,10 +659,10 @@ function CTASection() {
             <br />
             No code. No credit card. Just your wallet.
           </p>
-          <button className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#8b5cf6] text-white font-bold text-[15px] rounded-[4px] hover:bg-[#7c3aed] active:scale-[0.98] transition-all duration-150 group">
+          <Link href="/deploy" className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#8b5cf6] text-white font-bold text-[15px] rounded-[4px] hover:bg-[#7c3aed] active:scale-[0.98] transition-all duration-150 group">
             Start Deploying
             <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
-          </button>
+          </Link>
         </div>
       </div>
     </section>
