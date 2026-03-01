@@ -75,7 +75,8 @@ const STRATEGIES = [
     desc: "Automatically buy on dips. Average your entry price over time without lifting a finger.",
     stat: "↑ 12.4% avg weekly",
     pattern:
-      "repeating-linear-gradient(-45deg, rgba(59,130,246,0.05), rgba(59,130,246,0.05) 1px, transparent 1px, transparent 8px)",
+      "repeating-linear-gradient(-45deg, rgba(59,130,246,0.14), rgba(59,130,246,0.14) 1px, transparent 1px, transparent 8px)",
+    patternSize: "11px 11px",
   },
   {
     name: "Portfolio Guard",
@@ -85,7 +86,8 @@ const STRATEGIES = [
     desc: "Set stop-loss and take-profit thresholds. Protect your gains around the clock.",
     stat: "$1,240 saved last week",
     pattern:
-      "repeating-linear-gradient(0deg, rgba(16,185,129,0.05), rgba(16,185,129,0.05) 1px, transparent 1px, transparent 14px)",
+      "repeating-linear-gradient(0deg, rgba(16,185,129,0.12), rgba(16,185,129,0.12) 1px, transparent 1px, transparent 14px)",
+    patternSize: "100% 14px",
   },
   {
     name: "Yield Hunter",
@@ -95,7 +97,8 @@ const STRATEGIES = [
     desc: "Scan liquidity pools for highest APY. Auto-compound and rebalance daily.",
     stat: "34.2% APY on Orca",
     pattern:
-      "radial-gradient(circle, rgba(245,158,11,0.08) 1px, transparent 1px) 0 0 / 14px 14px",
+      "radial-gradient(circle, rgba(245,158,11,0.15) 1px, transparent 1px)",
+    patternSize: "14px 14px",
   },
   {
     name: "Token Sniper",
@@ -104,8 +107,9 @@ const STRATEGIES = [
     color: "#ef4444",
     desc: "Detect new token launches and execute buys within milliseconds of listing.",
     stat: "3 trades today",
-    pattern: `repeating-linear-gradient(0deg, rgba(239,68,68,0.04), rgba(239,68,68,0.04) 1px, transparent 1px, transparent 10px),
-      repeating-linear-gradient(90deg, rgba(239,68,68,0.04), rgba(239,68,68,0.04) 1px, transparent 1px, transparent 10px)`,
+    pattern: `repeating-linear-gradient(0deg, rgba(239,68,68,0.1), rgba(239,68,68,0.1) 1px, transparent 1px, transparent 10px),
+      repeating-linear-gradient(90deg, rgba(239,68,68,0.1), rgba(239,68,68,0.1) 1px, transparent 1px, transparent 10px)`,
+    patternSize: "10px 10px",
   },
 ];
 
@@ -115,16 +119,32 @@ function HeroSection() {
     <section className="min-h-screen pt-[60px] flex items-center">
       <div className="w-full max-w-[1400px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-12 lg:gap-16 py-20 items-center">
         {/* Left: text */}
-        <div>
+        <div className="relative">
+          {/* Purple radial glow behind heading */}
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              width: 600,
+              height: 600,
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -60%)",
+              background:
+                "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)",
+              zIndex: 0,
+            }}
+            aria-hidden
+          />
+
           <h1
-            className="text-[80px] md:text-[110px] lg:text-[130px] font-black leading-none text-white"
+            className="relative text-[80px] md:text-[110px] lg:text-[130px] font-black leading-none text-white"
             style={{ letterSpacing: "-0.04em" }}
           >
             DEPLOY.
           </h1>
 
           <p
-            className="mt-6 text-[17px] text-[#555] leading-relaxed max-w-sm"
+            className="mt-6 text-[17px] text-[#555] leading-relaxed max-w-sm relative"
             style={{ fontWeight: 400 }}
           >
             OpenClaw AI agents.
@@ -133,7 +153,7 @@ function HeroSection() {
           </p>
 
           {/* Live pill */}
-          <div className="mt-8 inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(255,255,255,0.08)] rounded-[4px]">
+          <div className="mt-4 inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(255,255,255,0.08)] rounded-[4px]">
             <span
               className="w-2 h-2 rounded-full bg-[#10b981] live-dot flex-shrink-0"
               aria-hidden
@@ -267,14 +287,14 @@ function BentoSection() {
         <div className="bento-cell bento-p1 flex flex-col">
           <span className="label-mono mb-6">Strategies</span>
           <p
-            className="text-[22px] font-bold text-white mb-auto"
+            className="text-[22px] font-bold text-white mb-6"
             style={{ letterSpacing: "-0.02em" }}
           >
             4 battle-tested
             <br />
             strategies
           </p>
-          <div className="flex flex-col gap-0 mt-8">
+          <div className="flex flex-col gap-0 flex-1 justify-end">
             {BENTO_STRATEGIES.map(({ name, risk }, i) => (
               <div
                 key={name}
@@ -303,6 +323,18 @@ function BentoSection() {
               </div>
             ))}
           </div>
+          {/* "4" watermark */}
+          <span
+            className="absolute bottom-0 right-4 font-black pointer-events-none select-none leading-none"
+            style={{
+              fontSize: 160,
+              color: "rgba(139,92,246,0.06)",
+              lineHeight: 0.85,
+            }}
+            aria-hidden
+          >
+            4
+          </span>
         </div>
 
         {/* Panel 2 — Non-custodial */}
@@ -425,7 +457,7 @@ function BentoSection() {
 /* ── Strategy blocks ──────────────────────────────── */
 function StrategySection() {
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="pt-20 pb-[30px] relative overflow-hidden">
       {/* Watermark */}
       <span
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-black pointer-events-none select-none whitespace-nowrap z-0"
@@ -450,11 +482,11 @@ function StrategySection() {
       </div>
 
       <div className="strategy-track px-8 relative z-10">
-        {STRATEGIES.map(({ name, icon: Icon, risk, color, desc, stat, pattern }) => (
+        {STRATEGIES.map(({ name, icon: Icon, risk, color, desc, stat, pattern, patternSize }) => (
           <div
             key={name}
             className="strategy-block"
-            style={{ borderTopColor: color, backgroundImage: pattern }}
+            style={{ borderTopColor: color, backgroundImage: pattern, backgroundSize: patternSize }}
           >
             {/* Rotated strategy name — left spine */}
             <div className="strategy-vert-name" style={{ color }}>
@@ -526,7 +558,7 @@ function StrategySection() {
 /* ── Social proof ─────────────────────────────────── */
 function SocialProofSection() {
   return (
-    <section className="py-16 px-8 max-w-[1400px] mx-auto">
+    <section className="pt-[30px] pb-[30px] px-8 max-w-[1400px] mx-auto">
       {/* Primary pull quote */}
       <div className="max-w-3xl relative">
         {/* Decorative quotation mark */}
@@ -588,9 +620,12 @@ function CTASection() {
   return (
     <section
       id="deploy"
-      className="py-20 px-8 flex justify-center items-center"
+      className="pt-[30px] pb-20 px-8 flex justify-center items-center"
     >
-      <div className="relative w-full max-w-2xl">
+      <div
+        className="relative w-full max-w-[680px]"
+        style={{ boxShadow: "0 0 120px rgba(139,92,246,0.12)" }}
+      >
         {/* SVG animated border */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none"
@@ -603,15 +638,15 @@ function CTASection() {
             y="0.5"
             width="calc(100% - 1px)"
             height="calc(100% - 1px)"
-            stroke="#8b5cf6"
-            strokeWidth="1"
+            stroke="rgba(139,92,246,0.6)"
+            strokeWidth="1.5"
             className="cta-border-rect"
           />
         </svg>
 
         <div className="px-10 md:px-20 py-20 text-center">
           <h2
-            className="text-[40px] md:text-[52px] font-black text-white leading-tight mb-4"
+            className="text-[52px] font-black text-white leading-tight mb-4"
             style={{ letterSpacing: "-0.04em" }}
           >
             Put your portfolio
