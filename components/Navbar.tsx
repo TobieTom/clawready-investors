@@ -14,7 +14,15 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50" style={{ height: 60 }}>
+    <nav
+      className="fixed top-0 left-0 right-0 z-50"
+      style={{
+        height: 60,
+        background: "rgba(0,0,0,0.6)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+      }}
+    >
       <div className="h-full flex items-center justify-between px-8 max-w-[1400px] mx-auto">
         {/* Logo — monospace, left-aligned */}
         <Link
@@ -54,7 +62,10 @@ export default function Navbar() {
       </div>
 
       {/* Animated purple bottom line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-[#8b5cf6] nav-line" />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-[2px] nav-line"
+        style={{ background: "rgba(139,92,246,0.8)" }}
+      />
 
       {/* Mobile drawer */}
       <div

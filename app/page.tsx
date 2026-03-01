@@ -8,6 +8,13 @@ import {
   Target,
 } from "lucide-react";
 
+/* ── Constants ────────────────────────────────────── */
+const RISK_COLORS: Record<string, string> = {
+  Low: "#10b981",
+  Medium: "#f59e0b",
+  High: "#ef4444",
+};
+
 /* ── Data ─────────────────────────────────────────── */
 
 const TERMINAL_LINES = [
@@ -147,13 +154,27 @@ function HeroSection() {
 
         {/* Right: animated terminal */}
         <div
-          className="border border-[rgba(255,255,255,0.07)] h-[360px] lg:h-[460px] flex flex-col overflow-hidden"
-          style={{ background: "#060606" }}
+          className="h-[360px] lg:h-[460px] flex flex-col overflow-hidden relative"
+          style={{
+            background: "#060606",
+            border: "1px solid rgba(255,255,255,0.12)",
+            boxShadow: "inset 0 0 60px rgba(139,92,246,0.08)",
+          }}
         >
-          {/* Terminal header */}
-          <div className="flex items-center justify-between px-5 py-3 border-b border-[rgba(255,255,255,0.06)] flex-shrink-0">
-            <span className="label-mono">Agent Activity Feed</span>
+          {/* Scanlines overlay */}
+          <div className="terminal-scanlines" aria-hidden />
+
+          {/* macOS-style title bar */}
+          <div className="flex items-center px-4 py-3 border-b border-[rgba(255,255,255,0.06)] flex-shrink-0 relative z-10">
             <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded-full bg-[#ef4444]" />
+              <div className="w-3 h-3 rounded-full bg-[#f59e0b]" />
+              <div className="w-3 h-3 rounded-full bg-[#10b981]" />
+            </div>
+            <span className="absolute inset-x-0 text-center label-mono pointer-events-none">
+              agent-activity.live
+            </span>
+            <div className="ml-auto flex items-center gap-1.5">
               <span
                 className="w-1.5 h-1.5 rounded-full bg-[#10b981] live-dot"
                 aria-hidden
@@ -163,7 +184,7 @@ function HeroSection() {
           </div>
 
           {/* Terminal body */}
-          <div className="flex-1 px-5 py-4 flex flex-col gap-3 overflow-hidden font-mono text-[13px]">
+          <div className="flex-1 px-5 py-4 flex flex-col gap-3 overflow-hidden font-mono text-[13px] relative z-10">
             {TERMINAL_LINES.map((line, i) => (
               <div
                 key={i}
@@ -186,7 +207,7 @@ function HeroSection() {
           </div>
 
           {/* Terminal footer bar */}
-          <div className="px-5 py-2.5 border-t border-[rgba(255,255,255,0.04)] flex items-center justify-between flex-shrink-0">
+          <div className="px-5 py-2.5 border-t border-[rgba(255,255,255,0.04)] flex items-center justify-between flex-shrink-0 relative z-10">
             <span className="label-mono">solana devnet</span>
             <span className="label-mono text-[#8b5cf6]">
               slot #289,481,420
@@ -220,15 +241,28 @@ function MetricsTicker() {
 /* ── Bento grid ───────────────────────────────────── */
 function BentoSection() {
   return (
-    <section className="py-20 px-8 max-w-[1400px] mx-auto">
+    <section className="py-20 px-8 max-w-[1400px] mx-auto relative overflow-hidden">
+      {/* Watermark */}
+      <span
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-black pointer-events-none select-none whitespace-nowrap z-0"
+        style={{
+          fontSize: "clamp(80px, 14vw, 180px)",
+          color: "rgba(255,255,255,0.018)",
+          letterSpacing: "-0.04em",
+        }}
+        aria-hidden
+      >
+        SIMPLE
+      </span>
+
       <h2
-        className="text-[44px] md:text-[52px] font-black text-white mb-10 leading-none"
+        className="text-[44px] md:text-[52px] font-black text-white mb-10 leading-none relative z-10"
         style={{ letterSpacing: "-0.04em" }}
       >
         Everything you need.
       </h2>
 
-      <div className="bento-grid">
+      <div className="bento-grid relative z-10">
         {/* Panel 1 — Strategies */}
         <div className="bento-cell bento-p1 flex flex-col">
           <span className="label-mono mb-6">Strategies</span>
@@ -241,7 +275,7 @@ function BentoSection() {
             strategies
           </p>
           <div className="flex flex-col gap-0 mt-8">
-            {BENTO_STRATEGIES.map(({ name, risk, color }, i) => (
+            {BENTO_STRATEGIES.map(({ name, risk }, i) => (
               <div
                 key={name}
                 className="flex items-center justify-between py-3"
@@ -251,11 +285,20 @@ function BentoSection() {
                   borderBottom: "1px solid rgba(255,255,255,0.06)",
                 }}
               >
-                <span className="text-[15px] font-semibold text-white">
+                <span
+                  className="text-[22px] font-bold text-white leading-tight"
+                  style={{ letterSpacing: "-0.03em" }}
+                >
                   {name}
                 </span>
-                <span className="font-mono text-[12px]" style={{ color }}>
-                  — {risk}
+                <span
+                  className="font-mono text-[11px] px-2 py-0.5 rounded-sm"
+                  style={{
+                    color: RISK_COLORS[risk],
+                    background: `${RISK_COLORS[risk]}22`,
+                  }}
+                >
+                  {risk}
                 </span>
               </div>
             ))}
@@ -306,22 +349,28 @@ function BentoSection() {
         {/* Panel 4 — Bar chart */}
         <div className="bento-cell bento-p4 flex flex-col">
           <span className="label-mono mb-4">AI vs Manual</span>
-          <div className="flex items-end gap-4 flex-1">
+          <div className="flex items-end gap-3 flex-1">
             {BAR_DATA.map(({ label, manual, ai }, gi) => (
               <div key={label} className="flex-1 flex flex-col gap-1">
-                <div className="flex items-end gap-1 h-20">
+                <div className="flex items-end gap-1.5 h-28">
                   {/* Manual bar */}
-                  <div className="flex-1 flex items-end">
+                  <div className="flex-1 flex flex-col items-center justify-end gap-1 h-full">
+                    <span className="label-mono" style={{ color: "#444" }}>
+                      {manual}%
+                    </span>
                     <div
-                      className="bar-grow w-full bg-[#1c1c1c]"
+                      className="bar-grow w-full"
                       style={{
                         height: `${manual}%`,
+                        background: "#1e1e1e",
+                        border: "1px solid #2a2a2a",
                         animationDelay: `${0.3 + gi * 0.4}s`,
                       }}
                     />
                   </div>
                   {/* AI bar */}
-                  <div className="flex-1 flex items-end">
+                  <div className="flex-1 flex flex-col items-center justify-end gap-1 h-full">
+                    <span className="label-mono text-[#8b5cf6]">{ai}%</span>
                     <div
                       className="bar-grow w-full bg-[#8b5cf6]"
                       style={{
@@ -376,8 +425,21 @@ function BentoSection() {
 /* ── Strategy blocks ──────────────────────────────── */
 function StrategySection() {
   return (
-    <section className="py-20">
-      <div className="px-8 max-w-[1400px] mx-auto mb-8 flex items-end justify-between">
+    <section className="py-20 relative overflow-hidden">
+      {/* Watermark */}
+      <span
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-black pointer-events-none select-none whitespace-nowrap z-0"
+        style={{
+          fontSize: "clamp(60px, 11vw, 140px)",
+          color: "rgba(255,255,255,0.018)",
+          letterSpacing: "-0.04em",
+        }}
+        aria-hidden
+      >
+        STRATEGIES
+      </span>
+
+      <div className="px-8 max-w-[1400px] mx-auto mb-8 flex items-end justify-between relative z-10">
         <h2
           className="text-[36px] md:text-[44px] font-black text-white leading-none"
           style={{ letterSpacing: "-0.04em" }}
@@ -387,7 +449,7 @@ function StrategySection() {
         <span className="label-mono hidden md:block">Scroll to explore →</span>
       </div>
 
-      <div className="strategy-track px-8">
+      <div className="strategy-track px-8 relative z-10">
         {STRATEGIES.map(({ name, icon: Icon, risk, color, desc, stat, pattern }) => (
           <div
             key={name}
@@ -434,7 +496,10 @@ function StrategySection() {
 
               {/* Stat */}
               <div className="mt-auto pt-4 border-t border-[rgba(255,255,255,0.06)]">
-                <p className="font-mono text-[12px]" style={{ color }}>
+                <p
+                  className="text-[20px] font-bold"
+                  style={{ color, letterSpacing: "-0.02em" }}
+                >
                   {stat}
                 </p>
               </div>
@@ -461,39 +526,56 @@ function StrategySection() {
 /* ── Social proof ─────────────────────────────────── */
 function SocialProofSection() {
   return (
-    <section className="py-28 px-8 max-w-[1400px] mx-auto">
+    <section className="py-16 px-8 max-w-[1400px] mx-auto">
       {/* Primary pull quote */}
-      <div className="max-w-3xl">
+      <div className="max-w-3xl relative">
+        {/* Decorative quotation mark */}
+        <span
+          className="absolute -top-10 -left-4 font-black pointer-events-none select-none leading-none"
+          style={{
+            fontSize: 200,
+            color: "rgba(139,92,246,0.12)",
+            fontFamily: "Georgia, 'Times New Roman', serif",
+            lineHeight: 1,
+          }}
+          aria-hidden
+        >
+          &ldquo;
+        </span>
+
         <blockquote
-          className="text-[40px] md:text-[52px] italic text-white leading-tight"
-          style={{ letterSpacing: "-0.02em" }}
+          className="relative text-[40px] md:text-[52px] italic text-white leading-tight font-extrabold"
+          style={{ letterSpacing: "-0.03em" }}
         >
           &ldquo;I deployed my first AI agent in 40 seconds. It&rsquo;s unlike
           anything in DeFi.&rdquo;
         </blockquote>
-        <p className="font-mono text-[13px] text-[#444] mt-5">
-          — Maya T., Retail Investor
+        <p className="font-mono text-[13px] mt-5">
+          <span className="text-[#8b5cf6]">Maya T.</span>
+          <span className="text-[#444]"> — Retail Investor</span>
         </p>
       </div>
 
       {/* Secondary quotes — asymmetric placement */}
-      <div className="mt-24 grid grid-cols-12 gap-6">
+      <div className="mt-12 grid grid-cols-12 gap-6">
         <div className="col-span-12 md:col-span-5">
-          <blockquote className="text-[17px] text-[#2e2e2e] italic leading-relaxed">
+          <blockquote className="text-[17px] text-[#666] italic leading-relaxed">
             &ldquo;ClawReady turned our manual DCA strategy into an automated
             system in under a minute.&rdquo;
           </blockquote>
-          <p className="font-mono text-[11px] text-[#252525] mt-3">
-            — Alex K., Fund Manager
+          <p className="font-mono text-[11px] mt-3">
+            <span className="text-[#8b5cf6]">Alex K.</span>
+            <span className="text-[#333]"> — Fund Manager</span>
           </p>
         </div>
         <div className="col-span-12 md:col-span-4 md:col-start-9">
-          <blockquote className="text-[17px] text-[#2e2e2e] italic leading-relaxed">
+          <blockquote className="text-[17px] text-[#666] italic leading-relaxed">
             &ldquo;Portfolio Guard saved me from a 30% drawdown. No code, no
             stress.&rdquo;
           </blockquote>
-          <p className="font-mono text-[11px] text-[#252525] mt-3">
-            — Ryan S., DeFi Researcher
+          <p className="font-mono text-[11px] mt-3">
+            <span className="text-[#8b5cf6]">Ryan S.</span>
+            <span className="text-[#333]"> — DeFi Researcher</span>
           </p>
         </div>
       </div>
@@ -506,7 +588,7 @@ function CTASection() {
   return (
     <section
       id="deploy"
-      className="py-24 px-8 flex justify-center items-center"
+      className="py-20 px-8 flex justify-center items-center"
     >
       <div className="relative w-full max-w-2xl">
         {/* SVG animated border */}

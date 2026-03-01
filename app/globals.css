@@ -190,6 +190,11 @@ body {
   padding: 28px;
   overflow: hidden;
   position: relative;
+  transition: box-shadow 0.2s ease;
+}
+.bento-cell:hover {
+  box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.4);
+  z-index: 1;
 }
 .bento-p1 {
   grid-column: 1 / 2;
@@ -277,7 +282,7 @@ body {
   min-width: 280px;
   height: 400px;
   background: #060606;
-  border-top: 2px solid transparent;
+  border-top: 4px solid transparent;
   display: flex;
   overflow: hidden;
   scroll-snap-align: start;
@@ -341,6 +346,21 @@ body {
   .cta-border-rect {
     animation: drawBorderSVG 2s 0.3s ease forwards;
   }
+}
+
+/* ── Terminal scanlines overlay ───────────────────── */
+.terminal-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.018) 2px,
+    rgba(255, 255, 255, 0.018) 4px
+  );
+  z-index: 2;
 }
 
 /* ── Section label ────────────────────────────────── */
