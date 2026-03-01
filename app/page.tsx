@@ -678,13 +678,20 @@ function Footer() {
           ClawReady
         </span>
         <nav className="flex gap-8">
-          {["Strategies", "Dashboard", "Docs", "GitHub"].map((link) => (
+          {(
+            [
+              { label: "Strategies", href: "/strategies" },
+              { label: "Dashboard", href: "/dashboard" },
+              { label: "Docs", href: "#" },
+              { label: "GitHub", href: "#" },
+            ] as { label: string; href: string }[]
+          ).map(({ label, href }) => (
             <a
-              key={link}
-              href="#"
-              className="text-[#333] hover:text-[#777] text-[13px] transition-colors flex items-center gap-1"
+              key={label}
+              href={href}
+              className="text-[#333] hover:text-[#777] text-[13px] transition-colors"
             >
-              {link}
+              {label}
             </a>
           ))}
         </nav>
