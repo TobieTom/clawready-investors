@@ -4,10 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
-const NAV_LINKS = [
+type NavLink = { label: string; href: string; external?: boolean };
+
+const NAV_LINKS: NavLink[] = [
   { label: "Strategies", href: "/strategies" },
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Docs", href: "/docs" },
+  {
+    label: "Docs",
+    href: "https://github.com/TOBIETOM/clawready-investors",
+    external: true,
+  },
 ];
 
 export default function Navbar() {
@@ -34,15 +40,27 @@ export default function Navbar() {
 
         {/* Desktop: links + CTA */}
         <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map(({ label, href }) => (
-            <Link
-              key={label}
-              href={href}
-              className="text-sm text-[#555] hover:text-white transition-colors duration-150"
-            >
-              {label}
-            </Link>
-          ))}
+          {NAV_LINKS.map(({ label, href, external }) =>
+            external ? (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-[#555] hover:text-white transition-colors duration-150"
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={label}
+                href={href}
+                className="text-sm text-[#555] hover:text-white transition-colors duration-150"
+              >
+                {label}
+              </Link>
+            )
+          )}
           <Link
             href="/deploy"
             className="px-4 py-2 text-sm text-white border border-[rgba(255,255,255,0.12)] rounded-[4px] hover:border-[#8b5cf6] hover:text-[#8b5cf6] active:scale-95 transition-all duration-150"
@@ -74,16 +92,29 @@ export default function Navbar() {
         }`}
       >
         <div className="px-8 py-5 flex flex-col gap-5">
-          {NAV_LINKS.map(({ label, href }) => (
-            <Link
-              key={label}
-              href={href}
-              className="text-sm text-[#555] hover:text-white transition-colors"
-              onClick={() => setOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
+          {NAV_LINKS.map(({ label, href, external }) =>
+            external ? (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-[#555] hover:text-white transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={label}
+                href={href}
+                className="text-sm text-[#555] hover:text-white transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                {label}
+              </Link>
+            )
+          )}
           <Link
             href="/deploy"
             className="w-fit px-4 py-2 text-sm text-white border border-[rgba(255,255,255,0.12)] rounded-[4px]"

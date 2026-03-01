@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 import Link from "next/link";
 import {
   LayoutDashboard,
@@ -92,12 +93,21 @@ const CHART_DATA = [
   { day: "Sun", value: 354 },
 ];
 
-const NAV_ITEMS = [
+type NavItem = {
+  label: string;
+  icon: React.ElementType;
+  href?: string;
+  scrollId?: string;
+  isToast?: boolean;
+  active?: boolean;
+};
+
+const NAV_ITEMS: NavItem[] = [
   { label: "Overview", icon: LayoutDashboard, href: "/dashboard", active: true },
-  { label: "My Agents", icon: Bot, href: "/dashboard/agents" },
-  { label: "Activity", icon: Activity, href: "/dashboard/activity" },
+  { label: "My Agents", icon: Bot, scrollId: "section-agents" },
+  { label: "Activity", icon: Activity, scrollId: "section-activity" },
   { label: "Strategies", icon: Layers, href: "/strategies" },
-  { label: "Settings", icon: Settings, href: "/dashboard/settings" },
+  { label: "Settings", icon: Settings, isToast: true },
 ];
 
 const INITIAL_ACTIVITY: ActivityItem[] = [
@@ -168,21 +178,53 @@ function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 flex flex-col gap-0.5">
-        {NAV_ITEMS.map(({ label, icon: Icon, href, active }) => (
-          <Link
-            key={label}
-            href={href}
-            className="flex items-center gap-3 px-3 py-2.5 text-[14px] transition-colors duration-150 hover:text-white"
-            style={{
-              color: active ? "#8b5cf6" : "#64748b",
-              background: active ? "rgba(139,92,246,0.08)" : "transparent",
-              borderLeft: `3px solid ${active ? "#8b5cf6" : "transparent"}`,
-            }}
-          >
-            <Icon className="w-4 h-4 flex-shrink-0" />
-            <span className={active ? "font-medium" : ""}>{label}</span>
-          </Link>
-        ))}
+        {NAV_ITEMS.map(({ label, icon: Icon, href, scrollId, isToast, active }) => {
+          const sharedStyle = {
+            color: active ? "#8b5cf6" : "#64748b",
+            background: active ? "rgba(139,92,246,0.08)" : "transparent",
+            borderLeft: `3px solid ${active ? "#8b5cf6" : "transparent"}`,
+          };
+          const sharedClass =
+            "flex items-center gap-3 px-3 py-2.5 text-[14px] transition-colors duration-150 hover:text-white w-full text-left";
+
+          if (isToast) {
+            return (
+              <button
+                key={label}
+                onClick={() => toast("Settings coming soon", { icon: "⚙️" })}
+                className={sharedClass}
+                style={sharedStyle}
+              >
+                <Icon className="w-4 h-4 flex-shrink-0" />
+                <span>{label}</span>
+              </button>
+            );
+          }
+          if (scrollId) {
+            return (
+              <a
+                key={label}
+                href={`#${scrollId}`}
+                className={sharedClass}
+                style={sharedStyle}
+              >
+                <Icon className="w-4 h-4 flex-shrink-0" />
+                <span>{label}</span>
+              </a>
+            );
+          }
+          return (
+            <Link
+              key={label}
+              href={href!}
+              className={sharedClass}
+              style={sharedStyle}
+            >
+              <Icon className="w-4 h-4 flex-shrink-0" />
+              <span className={active ? "font-medium" : ""}>{label}</span>
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Wallet pill */}
@@ -733,17 +775,48 @@ function MobileBottomNav() {
         borderTop: "1px solid rgba(255,255,255,0.06)",
       }}
     >
-      {NAV_ITEMS.map(({ label, icon: Icon, href, active }) => (
-        <Link
-          key={label}
-          href={href}
-          className="flex-1 flex flex-col items-center gap-1 py-3 transition-colors"
-          style={{ color: active ? "#8b5cf6" : "#333" }}
-        >
-          <Icon className="w-5 h-5" />
-          <span className="text-[9px] font-mono">{label}</span>
-        </Link>
-      ))}
+      {NAV_ITEMS.map(({ label, icon: Icon, href, scrollId, isToast, active }) => {
+        const sharedClass = "flex-1 flex flex-col items-center gap-1 py-3 transition-colors";
+        const sharedStyle = { color: active ? "#8b5cf6" : "#333" };
+
+        if (isToast) {
+          return (
+            <button
+              key={label}
+              onClick={() => toast("Settings coming soon", { icon: "⚙️" })}
+              className={sharedClass}
+              style={sharedStyle}
+            >
+              <Icon className="w-5 h-5" />
+              <span className="text-[9px] font-mono">{label}</span>
+            </button>
+          );
+        }
+        if (scrollId) {
+          return (
+            <a
+              key={label}
+              href={`#${scrollId}`}
+              className={sharedClass}
+              style={sharedStyle}
+            >
+              <Icon className="w-5 h-5" />
+              <span className="text-[9px] font-mono">{label}</span>
+            </a>
+          );
+        }
+        return (
+          <Link
+            key={label}
+            href={href!}
+            className={sharedClass}
+            style={sharedStyle}
+          >
+            <Icon className="w-5 h-5" />
+            <span className="text-[9px] font-mono">{label}</span>
+          </Link>
+        );
+      })}
     </nav>
   );
 }
@@ -846,7 +919,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Agents */}
-          <div>
+          <div id="section-agents">
             <h2
               className="text-[16px] font-bold text-white mb-4"
               style={{ letterSpacing: "-0.02em" }}
@@ -890,7 +963,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Activity feed + chart */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
+          <div id="section-activity" className="grid grid-cols-1 xl:grid-cols-2 gap-3">
             <LiveActivityFeed items={activity} />
             <PerformanceChart />
           </div>
