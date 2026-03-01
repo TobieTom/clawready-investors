@@ -639,11 +639,11 @@ function PerformanceChart() {
         </h2>
       </div>
 
-      <div className="px-6 pt-5 pb-6">
+      <div className="pl-6 pr-12 pt-5 pb-6">
         {/* Chart */}
         <div
           className="flex gap-2 relative"
-          style={{ height: CHART_H + DAY_LABEL_H + 20 }}
+          style={{ height: CHART_H + DAY_LABEL_H + 20, overflow: "visible" }}
         >
           {/* Grid lines (absolute, within bar area) */}
           {GRID_FRACS.map((frac) => (
@@ -841,8 +841,8 @@ export default function DashboardPage() {
               sub="+12.4% this month"
               valueColor="#10b981"
             />
-            <StatCard label="Value Managed" value="$10,430" />
-            <StatCard label="Transactions Today" value="47" />
+            <StatCard label="Value Managed" value="$10,430" sub="across 3 agents" />
+            <StatCard label="Transactions Today" value="47" sub="last 24 hours" />
           </div>
 
           {/* Agents */}
